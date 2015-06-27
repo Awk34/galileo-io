@@ -11,7 +11,25 @@ var useMraa = (function() {
 var safeBuild = "0.7.2";
 var safeVersion = "0.7.2";
 
-if (useMraa) {
+exec('cat /etc/*-release | grep ID', function(err, stdout, stderr) {
+  if(err) {
+    console.log(error);
+    process.exit(1);
+  } else {
+    if(stdout.includes('debian')) {
+      console.log('==========================ATTENTION==========================');
+      console.log('It looks like you\'re using Debian/Ubilinux');
+      console.log('You\'ll need to install at least mraa version ' + safeVersion + ' for this package to work.');
+      console.log('More information available at https://learn.sparkfun.com/tutorials/installing-libmraa-on-ubilinux-for-edison');
+      console.log('==========================ATTENTION==========================');
+      process.exit(0);
+    } else if(useMraa) {
+      installMraa();
+    }
+  }
+});
+
+function installMraa() {
   console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   console.log("  Do not quit the program until npm completes the installation process.  ");
   console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
